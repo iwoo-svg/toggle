@@ -1,4 +1,3 @@
-// On / Off — every control changes the page in a different way
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -22,14 +21,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const popSound = new Audio("pop.wav");
 
-  // ---------- numbers from the Figma file ----------
   const STAGE_WIDTH = 1440;
   const STAGE_HEIGHT = 1024;
-  const SLIDER_TRAVEL = 581;   // track height 663 - knob height 82
-  const ROUND_TRAVEL = 185;    // track width 290 - knob width 105
+  const SLIDER_TRAVEL = 581;   
+  const ROUND_TRAVEL = 185;    
 
-  // where each slider knob starts (top, in px)
-  const startTops = [581, 276, 421];   // blur, volume, puffiness
+  const startTops = [581, 276, 421]; 
 
   // current values (0 = bottom, 1 = top)
   let blurValue = 0;
@@ -37,7 +34,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let puffValue = 0;
 
 
-  // ---------- fit the 1440 x 1024 frame into the window ----------
   let scale = 1;
 
   function fitStage() {
@@ -49,13 +45,13 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("resize", fitStage);
 
 
-  // ---------- the toggle bar shows what just happened ----------
+
   function showMessage(message) {
     barText.textContent = message;
   }
 
 
-  // ---------- 1. dark mode toggle (click) ----------
+  //  1. dark mode toggle (click) 
   darkToggle.addEventListener("click", function () {
     body.classList.toggle("dark");
 
@@ -67,20 +63,20 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 
-  // ---------- 2. toggle bar on / off (click) ----------
+  //  2. toggle bar on / off (click) 
   barToggle.addEventListener("click", function () {
     body.classList.toggle("bar-on");
     showMessage("THE TOGGLE BAR");
   });
 
 
-  // ---------- 3. blackout (click) ----------
+  //  3. blackout (click) 
   blackoutButton.addEventListener("click", function () {
     body.classList.toggle("blackout-on");
   });
 
 
-  // ---------- 4. pop sound (click) ----------
+  //  4. pop sound (click) 
   popButton.addEventListener("click", function () {
     popSound.currentTime = 0;
     popSound.volume = volumeValue;
@@ -95,10 +91,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 
-  // ---------- 5. sliders (drag) ----------
+  //  5. sliders (drag) 
   let activeSlider = null;
 
-  // move one slider knob and update its value
   function setSlider(slider, top) {
     if (top < 0) {
       top = 0;
@@ -110,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const knob = slider.querySelector(".slider-knob");
     knob.style.top = top + "px";
 
-    const value = 1 - top / SLIDER_TRAVEL;   // 0 at the bottom, 1 at the top
+    const value = 1 - top / SLIDER_TRAVEL;   
 
     if (slider === blurSlider) {
       blurValue = value;
@@ -127,14 +122,12 @@ document.addEventListener("DOMContentLoaded", function () {
     applyFilters();
   }
 
-  // blur is applied to the whole stage
   function applyFilters() {
     const blur = blurValue * 10;   // 0px - 10px
     stage.style.filter = "blur(" + blur + "px)";
   }
 
-  // puffiness: every shadow gets bigger, so the UI looks thicker
-  // 1 = the Figma design, 0.2 = almost flat, 3.1 = very puffy
+  // puffiness
   function applyPuff() {
     const puff = 0.2 + puffValue * 2.9;
     const root = document.documentElement;
@@ -147,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
     root.style.setProperty("--spread-knob", -19 * puff + "px");
   }
 
-  // mouse position -> knob position
+  
   function dragSlider(event) {
     const box = activeSlider.getBoundingClientRect();
     const y = (event.clientY - box.top) / scale;
@@ -162,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  // ---------- 6. corner rounding toggle (drag or click) ----------
+  //  6. corner rounding toggle  
   let roundDragging = false;
   let roundMoved = false;
   let startX = 0;
@@ -203,15 +196,15 @@ document.addEventListener("DOMContentLoaded", function () {
     let isOn;
 
     if (roundMoved) {
-      // dragged: snap to the closer side
+
       isOn = parseFloat(roundKnob.style.left) > ROUND_TRAVEL / 2;
     } else {
-      // just clicked: flip
+
       isOn = !roundToggle.classList.contains("on");
     }
 
     roundKnob.classList.remove("dragging");
-    roundKnob.style.left = "";   // let the CSS class decide (with transition)
+    roundKnob.style.left = "";  
 
     roundToggle.classList.toggle("on", isOn);
     body.classList.toggle("round", isOn);
@@ -226,7 +219,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  // ---------- mouse move / up for everything that drags ----------
   document.addEventListener("mousemove", function (event) {
     if (activeSlider !== null) {
       dragSlider(event);
@@ -244,7 +236,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 
-  // ---------- 7. reset (click) — back to the beginning ----------
   function resetAll() {
     body.classList.remove("dark", "bar-on", "blackout-on", "round");
     roundToggle.classList.remove("on");
@@ -267,7 +258,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 
-  // start
   resetAll();
 
 });
