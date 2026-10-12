@@ -1,0 +1,360 @@
+/* On / Off — neumorphic toggles
+   font: Dot Digital-7 by Sizenko Alexander (styleseven.com), free for education */
+
+@font-face {
+  font-family: "Dot Digital";
+  src: url("dot_digital-7.ttf");
+}
+
+/* ---------- colors ---------- */
+:root {
+  --bg: #ecf0f3;
+  --shadow: #d1d9e6;
+  --highlight: #ffffff;
+  --led: #81ffb1;
+  --text: #a8adb0;
+
+  /* how thick / puffy the UI looks (changed by the right slider) */
+  --off: 18px;
+  --off-neg: -18px;
+  --blur: 30px;
+  --blur-small: 20px;
+  --spread: -13px;
+  --spread-knob: -19px;
+}
+
+body.dark {
+  --bg: #2b2f36;
+  --shadow: #1c1f24;
+  --highlight: #3a3f48;
+  --led: #ff471d;
+  --text: #8a9099;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg);
+  overflow: hidden;
+  user-select: none;   /* no text highlight while dragging */
+  transition: background-color 0.6s ease;
+}
+
+/* the 1440 x 1024 Figma frame. JS scales it to fit the window */
+.stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1440px;
+  height: 1024px;
+  margin-left: -720px;
+  margin-top: -512px;
+  transition: filter 0.2s ease, opacity 0.4s ease;
+}
+
+.stage > div {
+  position: absolute;
+  background-color: var(--bg);
+  cursor: pointer;
+  transition: background-color 0.6s ease, box-shadow 0.6s ease,
+              border-radius 0.5s ease, opacity 0.4s ease;
+}
+
+
+/* ---------- shadow types ---------- */
+/* pressed in + popped out */
+.reset,
+.bar-toggle,
+.dark-toggle,
+.round-toggle,
+.slider {
+  box-shadow:
+    var(--off-neg) var(--off-neg) var(--blur) var(--spread) var(--highlight),
+     var(--off) var(--off) var(--blur) 0px   var(--shadow),
+    inset  var(--off) var(--off) var(--blur) var(--shadow),
+    inset var(--off-neg) var(--off-neg) var(--blur) var(--highlight);
+}
+
+/* popped out only */
+.blackout,
+.reset-inner,
+.pop-inner,
+.bar-knob,
+.round-knob {
+  box-shadow:
+    var(--off-neg) var(--off-neg) var(--blur) var(--spread) var(--highlight),
+     var(--off) var(--off) var(--blur) 0px   var(--shadow);
+}
+
+
+/* ---------- 1. reset ---------- */
+.reset {
+  left: 360px;
+  top: 217px;
+  width: 143px;
+  height: 143px;
+  border-radius: 30px;
+}
+
+.reset-inner {
+  position: absolute;
+  left: 23px;
+  top: 23px;
+  width: 95px;
+  height: 95px;
+  border-radius: 20px;
+  background-color: var(--bg);
+  transition: border-radius 0.5s ease, box-shadow 0.6s ease, background-color 0.6s ease;
+}
+
+.reset.spin .reset-inner {
+  animation: spin 0.6s ease;
+}
+
+@keyframes spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* ---------- 2. blackout ---------- */
+.blackout {
+  left: 552px;
+  top: 217px;
+  width: 143px;
+  height: 143px;
+  border-radius: 50%;
+}
+
+.blackout:active {
+  transform: scale(0.97);
+}
+
+/* everything disappears except the blackout button */
+body.blackout-on {
+  background-color: black;
+}
+
+body.blackout-on .stage > div {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.blackout-on .stage > .blackout {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0px 0px 40px 4px rgba(255, 255, 255, 0.15);
+}
+
+
+/* ---------- 3. pop ---------- */
+.pop {
+  left: 719px;
+  top: 430px;
+  width: 143px;
+  height: 143px;
+  border-radius: 50%;
+  box-shadow:
+    inset  var(--off) var(--off) var(--blur) var(--shadow),
+    inset var(--off-neg) var(--off-neg) var(--blur) var(--highlight);
+}
+
+.pop-inner {
+  position: absolute;
+  left: 31.5px;
+  top: 31.5px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: var(--bg);
+}
+
+.pop.popping .pop-inner {
+  animation: pop 0.35s ease-out;
+}
+
+@keyframes pop {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(0.8); box-shadow: inset 8px 8px 16px var(--shadow); }
+  70%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+
+/* ---------- 4. vertical toggle (the toggle bar) ---------- */
+.bar-toggle {
+  left: 364px;
+  top: 592px;
+  width: 79px;
+  height: 252px;
+  border-radius: 20px;
+}
+
+.bar-knob {
+  position: absolute;
+  left: -4px;
+  top: 166px;
+  width: 86px;
+  height: 86px;
+  border-radius: 20px;
+  background-color: var(--bg);
+  transition: top 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-radius 0.5s ease, box-shadow 0.6s ease, background-color 0.6s ease;
+}
+
+body.bar-on .bar-knob {
+  top: 0px;
+}
+
+/* the bar itself */
+.stage > .toggle-bar {
+  left: 204px;
+  top: 62px;
+  width: 944px;
+  height: 236px;
+  border-radius: 40px;
+  background-color: rgba(236, 240, 243, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    var(--off-neg) var(--off-neg) var(--blur) var(--spread) var(--highlight),
+     var(--off) var(--off) var(--blur) 0px   var(--shadow);
+  z-index: 5;
+  pointer-events: none;   /* clicks go through the glass to the buttons below */
+  transform: translateY(-420px);
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.6s ease;
+}
+
+body.dark .stage > .toggle-bar {
+  background-color: rgba(43, 47, 54, 0.3);
+}
+
+body.bar-on .stage > .toggle-bar {
+  transform: translateY(0px);
+}
+
+.bar-text {
+  margin-top: 95px;
+  text-align: center;
+  font-family: "Dot Digital", monospace;
+  font-size: 48px;
+  color: var(--text);
+}
+
+
+/* ---------- 5. dark mode toggle ---------- */
+.dark-toggle {
+  left: 571px;
+  top: 607.5px;
+  width: 290px;
+  height: 100px;
+  border-radius: 71px;
+}
+
+.dark-knob {
+  position: absolute;
+  left: 0px;
+  top: 4px;
+  width: 93px;
+  height: 93px;
+  border-radius: 50%;
+  border: 4px solid transparent;
+  /* glassy fill + white gradient ring */
+  background:
+    linear-gradient(rgba(204, 212, 217, 0.2), rgba(204, 212, 217, 0.2)) padding-box,
+    linear-gradient(135deg, var(--highlight), var(--shadow) 37%, var(--highlight)) border-box;
+  box-shadow:
+    var(--off-neg) var(--off-neg) var(--blur) var(--spread-knob) var(--highlight),
+     var(--off) var(--off) var(--blur-small) 0px   var(--shadow);
+  transition: left 0.5s cubic-bezier(0.65, 0, 0.35, 1), box-shadow 0.6s ease;
+}
+
+body.dark .dark-knob {
+  left: 197px;
+}
+
+.led {
+  position: absolute;
+  left: 18.5px;
+  top: 19px;
+  width: 48px;
+  height: 47px;
+  border-radius: 50%;
+  background-color: var(--led);
+  filter: blur(6.5px);
+  transition: background-color 0.5s ease;
+}
+
+body.dark .led {
+  box-shadow: 0px 0px 24px 6px rgba(255, 71, 29, 0.45);
+}
+
+
+/* ---------- 6. square toggle (corner rounding) ---------- */
+.round-toggle {
+  left: 571px;
+  top: 741px;
+  width: 290px;
+  height: 100px;
+  border-radius: 20px;
+}
+
+.round-knob {
+  position: absolute;
+  left: 0px;
+  top: -3px;
+  width: 105px;
+  height: 105px;
+  border-radius: 20px;
+  background-color: var(--bg);
+  transition: left 0.4s ease, border-radius 0.5s ease,
+              box-shadow 0.6s ease, background-color 0.6s ease;
+}
+
+.round-toggle.on .round-knob {
+  left: 185px;
+}
+
+/* while dragging, the knob follows the mouse with no delay */
+.round-knob.dragging {
+  transition: none;
+}
+
+/* every square becomes round */
+body.round .reset        { border-radius: 50%; }
+body.round .reset-inner  { border-radius: 50%; }
+body.round .bar-toggle   { border-radius: 40px; }
+body.round .bar-knob     { border-radius: 50%; }
+body.round .round-toggle { border-radius: 71px; }
+body.round .round-knob   { border-radius: 50%; }
+
+
+/* ---------- 7. sliders ---------- */
+.slider {
+  top: 181px;
+  width: 32px;
+  height: 663px;
+  border-radius: 30px;
+}
+
+#blur-slider   { left: 901px; }
+#volume-slider { left: 974px; }
+#puff-slider  { left: 1047px; top: 180px; }
+
+.slider-knob {
+  position: absolute;
+  left: -2px;
+  top: 0px;
+  width: 35px;
+  height: 82px;
+  border-radius: 19px;
+  background-color: var(--bg);
+  box-shadow:
+    var(--off-neg) var(--off-neg) var(--blur) 0px var(--highlight),
+     var(--off) var(--off) var(--blur) 0px var(--shadow);
+  transition: box-shadow 0.6s ease, background-color 0.6s ease;
+}

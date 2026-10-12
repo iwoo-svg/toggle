@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>On / Off</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="stage">
+
+    <!-- the toggle bar (drops down from the top) -->
+    <div class="toggle-bar">
+      <p class="bar-text">THE TOGGLE BAR</p>
+    </div>
+
+    <!-- reset: everything goes back to the start -->
+    <div class="reset" id="reset">
+      <div class="reset-inner"></div>
+    </div>
+
+    <!-- blackout: the whole screen goes black except this button -->
+    <div class="blackout" id="blackout"></div>
+
+    <!-- pop: plays a popping sound -->
+    <div class="pop" id="pop">
+      <div class="pop-inner"></div>
+    </div>
+
+    <!-- vertical toggle: the toggle bar pops on / off -->
+    <div class="bar-toggle" id="bar-toggle">
+      <div class="bar-knob"></div>
+    </div>
+
+    <!-- dark mode toggle -->
+    <div class="dark-toggle" id="dark-toggle">
+      <div class="dark-knob">
+        <div class="led"></div>
+      </div>
+    </div>
+
+    <!-- square toggle: rounds every square corner (drag or click) -->
+    <div class="round-toggle" id="round-toggle">
+      <div class="round-knob"></div>
+    </div>
+
+    <!-- sliders: blur / volume / puffiness (drag) -->
+    <div class="slider" id="blur-slider">
+      <div class="slider-knob"></div>
+    </div>
+    <div class="slider" id="volume-slider">
+      <div class="slider-knob"></div>
+    </div>
+    <div class="slider" id="puff-slider">
+      <div class="slider-knob"></div>
+    </div>
+
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
