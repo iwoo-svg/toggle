@@ -56,9 +56,9 @@ document.addEventListener("DOMContentLoaded", function () {
     body.classList.toggle("dark");
 
     if (body.classList.contains("dark")) {
-      showMessage("DARK MODE ON");
+      showMessage("DARK MODE");
     } else {
-      showMessage("DARK MODE OFF");
+      showMessage("LIGHT MODE");
     }
   });
 
