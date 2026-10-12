@@ -215,10 +215,10 @@ body.bar-on .bar-knob {
     var(--off-neg) var(--off-neg) var(--blur) var(--spread) var(--highlight),
      var(--off) var(--off) var(--blur) 0px   var(--shadow);
   z-index: 5;
-  pointer-events: none;   
+  pointer-events: none;
   transform: translateX(-708px);
   transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
-              box-shadow 0.6s ease;
+              box-shadow 0.6s ease, border-radius 0.5s ease;
 }
 
 body.dark .stage > .toggle-bar {
@@ -319,7 +319,8 @@ body.round .bar-toggle   { border-radius: 40px; }
 body.round .bar-knob     { border-radius: 50%; }
 body.round .round-toggle { border-radius: 71px; }
 body.round .round-knob   { border-radius: 50%; }
-
+body.round .round-knob   { border-radius: 50%; }
+body.round .stage > .toggle-bar { border-radius: 71.5px; }
 
 .slider {
   top: 181px;
