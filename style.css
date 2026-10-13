@@ -140,7 +140,7 @@ body.blackout-on .stage > div {
 }
 
 body.blackout-on .stage > .blackout {
-  opacity: 0;
+  opacity: 1;
   pointer-events: auto;
   box-shadow: 0px 0px 40px 4px rgba(255, 255, 255, 0.15);
 }
@@ -230,9 +230,7 @@ body.bar-on .stage > .toggle-bar {
   transform: translateX(0px);
   opacity: 1;
 }
-body.blackout-on .stage > .toggle-bar {
-  opacity: 0;
-}
+
 
 /* blackout hides the toggle bar too (must come after the bar-on rule) */
 body.blackout-on .stage > .toggle-bar {
