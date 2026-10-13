@@ -216,7 +216,7 @@ body.bar-on .bar-knob {
      var(--off) var(--off) var(--blur) 0px   var(--shadow);
   z-index: 5;
   pointer-events: none;
-  transform: translateX(-1440px);
+  transform: translateX(-2000px);
   transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
               box-shadow 0.6s ease, border-radius 0.5s ease;
 }
