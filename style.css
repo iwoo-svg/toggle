@@ -230,6 +230,9 @@ body.bar-on .stage > .toggle-bar {
   transform: translateX(0px);
   opacity: 1;
 }
+body.blackout-on .stage > .toggle-bar {
+  opacity: 0;
+}
 
 /* blackout hides the toggle bar too (must come after the bar-on rule) */
 body.blackout-on .stage > .toggle-bar {
